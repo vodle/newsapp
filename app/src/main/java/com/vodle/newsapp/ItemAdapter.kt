@@ -15,7 +15,7 @@ import com.vodle.newsapp.ItemAdapter.ViewHolder
 
 class ItemAdapter(
     val context : Context,
-    val itemsArticles : List<ItemList>,
+    var itemsArticles : List<ItemList>,
     val listener: (ItemList) -> Unit
 ) : RecyclerView.Adapter<ViewHolder>(){
     class ViewHolder(view: View):RecyclerView.ViewHolder(view){

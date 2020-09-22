@@ -20,28 +20,33 @@ class NewsActivity : AppCompatActivity(){
 
     var articleList = mutableListOf<ItemList>()
 
+   var ADAPTER = ItemAdapter(this, articleList){}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_news)
 
+
+        val recycleView = findViewById<RecyclerView>(R.id.recycler)
         var intent = intent
+        var URLE = intent.getStringExtra("serchreq").toString()
+        recycleView.adapter = ADAPTER
+        run(URLE)
+        Log.d("OKK", articleList.size.toString())
+        recycleView.layoutManager = LinearLayoutManager(this)
+        recycleView.setHasFixedSize(true)
 
 //"http://newsapi.org/v2/everything?q=all&apiKey=5abbc7a648c742c8917b6d53c9d8832c"
 
-       btnOKK.setOnClickListener {
-           val recycleView = findViewById<RecyclerView>(R.id.recycler)
-           recycleView.layoutManager = LinearLayoutManager(this)
-           recycleView.setHasFixedSize(true)
-           recycleView.adapter = ItemAdapter(this, articleList){}
-            var URLE = intent.getStringExtra("serchreq").toString()
-           Log.d("OK", URLE.toString())
-           if (URLE != null) {
-               run(URLE)
-           }
 
 
 
-       }
+
+
+
+
+
+
 
 
 
@@ -61,9 +66,22 @@ class NewsActivity : AppCompatActivity(){
                 var article = articles.getJSONArray("articles")
                 Log.d("OK", article.toString())
                 for (i in 0..10){
-                    var articlein = ItemList("not",
-                        "not",
-                        "not",
+                    var ID = "ID"
+                    if (article.getJSONObject(i).has("id")){
+                        ID = article.getJSONObject(i).get("id").toString()
+                    }
+                    var NAME = "NAME"
+                    if (article.getJSONObject(i).has("name")){
+                        NAME = article.getJSONObject(i).get("name").toString()
+                    }
+                    var AUTHOR = "author"
+                    if (article.getJSONObject(i).has("author")){
+                        AUTHOR = article.getJSONObject(i).get("author").toString()
+                    }
+
+                    var articlein = ItemList(ID,
+                        NAME,
+                        AUTHOR,
                         article.getJSONObject(i).get("title").toString(),
                         article.getJSONObject(i).get("description").toString(),
                         article.getJSONObject(i).get("url").toString(),
@@ -71,10 +89,16 @@ class NewsActivity : AppCompatActivity(){
                         article.getJSONObject(i).get("publishedAt").toString(),
                         article.getJSONObject(i).get("content").toString()
                         )
+
                     articleList.add(articlein)
+                    Log.d("OKKK", articleList.size.toString())
 
                 }
-
+                runOnUiThread(Runnable(){
+                    ADAPTER.itemsArticles = articleList
+                    ADAPTER.notifyDataSetChanged()
+                })
+                Log.d("OKKKK", articleList.size.toString())
             }
         })
     }
