@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.collection.arraySetOf
+import androidx.core.os.persistableBundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.main_news.*
@@ -11,6 +13,7 @@ import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
 import kotlin.math.log
+
 
 class NewsActivity : AppCompatActivity(){
 
@@ -20,7 +23,12 @@ class NewsActivity : AppCompatActivity(){
 
     var articleList = mutableListOf<ItemList>()
 
-   var ADAPTER = ItemAdapter(this, articleList){}
+
+   var ADAPTER = ItemAdapter(this, articleList){
+       var INTENT = Intent(this, DetailActivity::class.java)
+       INTENT.putExtra("OBJECT", it)
+       startActivity(INTENT)
+   }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,15 +45,6 @@ class NewsActivity : AppCompatActivity(){
         recycleView.setHasFixedSize(true)
 
 //"http://newsapi.org/v2/everything?q=all&apiKey=5abbc7a648c742c8917b6d53c9d8832c"
-
-
-
-
-
-
-
-
-
 
 
 
@@ -89,6 +88,7 @@ class NewsActivity : AppCompatActivity(){
                         article.getJSONObject(i).get("publishedAt").toString(),
                         article.getJSONObject(i).get("content").toString()
                         )
+                    //INTENT.putExtra("name", articlein.name)
 
                     articleList.add(articlein)
                     Log.d("OKKK", articleList.size.toString())

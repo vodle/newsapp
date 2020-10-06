@@ -4,6 +4,8 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import org.json.JSONObject
 
+
+@Parcelize
 data class ItemList(
 
     var id : String,
@@ -15,4 +17,4 @@ data class ItemList(
     var urlImage : String,
     var publishDate : String,
     var content : String
-)
+):Parcelable

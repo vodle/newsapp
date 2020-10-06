@@ -3,6 +3,7 @@ package com.vodle.newsapp
 import android.content.Context
 import android.icu.number.NumberFormatter.with
 import android.icu.number.NumberRangeFormatter.with
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +35,10 @@ class ItemAdapter(
 
             Picasso.get().load(article.urlImage).into(imageOnCardSrc)
 
+            itemView.setOnClickListener { listener(article) }
+
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_of_list, parent, false))
